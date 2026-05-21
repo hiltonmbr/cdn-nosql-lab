@@ -26,7 +26,7 @@ Este projeto inclui quatro bancos de dados, cada um representando um paradigma f
 | 🔴 **Redis** | Chave-Valor | `redis:alpine` | `6379` | `redis-cli` |
 | 🟢 **MongoDB** | Documento | `mongo:8.3` | `27017` | `mongosh` |
 | 🔵 **Cassandra** | Família de Colunas | `cassandra:5.0.8-bookworm` | `9042` | `cqlsh` |
-| 🟡 **Neo4j** | Grafo | `neo4j:5.26.26-community-ubi10` | `7474` (HTTP) / `7687` (Bolt) | Navegador Web |
+| 🟡 **Neo4j** | Grafo | `neo4j:5.26.26-community-ubi10` | `7475` (HTTP) / `7688` (Bolt) | Navegador Web |
 
 ### Por que esses quatro?
 
@@ -130,8 +130,8 @@ cdn-docker-nosql/
 │                                                             │
 │   ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  │
 │   │  Redis   │  │ MongoDB  │  │Cassandra │  │  Neo4j   │  │
-│   │ :6379    │  │ :27017   │  │ :9042    │  │ :7474    │  │
-│   │          │  │          │  │          │  │ :7687    │  │
+│   │ :6379    │  │ :27017   │  │ :9042    │  │ :7475    │  │
+│   │          │  │          │  │          │  │ :7688    │  │
 │   └────┬─────┘  └────┬─────┘  └────┬─────┘  └────┬─────┘  │
 │        │             │             │              │         │
 │   redis_data    mongo_data   cassandra_data  neo4j_data    │
@@ -204,7 +204,7 @@ O MongoDB armazena dados como **documentos BSON** (JSON binário), permitindo es
 |:--|:--|
 | **Porta** | `27017` |
 | **Autenticação** | Usuário `mongo` / Senha `mongo` |
-| **URI de Conexão** | `mongodb://mongo:mongo@localhost:27017/?authSource=admin` |
+| **URI de Conexão** | `mongodb://mongo:mongo@localhost:27017/?authSource=admin&directConnection=true` |
 | **Linguagem de consulta** | MQL (MongoDB Query Language) |
 
 **Conectar via CLI (`mongosh`):**
@@ -298,14 +298,20 @@ O Neo4j modela dados como **nós** (entidades) e **relacionamentos** (conexões 
 
 | Propriedade | Valor |
 |:--|:--|
-| **Porta HTTP** | `7474` (interface web) |
-| **Porta Bolt** | `7687` (protocolo binário do driver) |
+| **Porta HTTP** | `7475` (interface web) |
+| **Porta Bolt** | `7688` (protocolo binário do driver) |
 | **Autenticação** | Desativada (`NEO4J_AUTH=none`) |
 | **Linguagem de consulta** | Cypher |
 
 **Conectar via Interface Gráfica (Browser):**
 
-Abra seu navegador e acesse: **[http://localhost:7474](http://localhost:7474)**
+Abra seu navegador e acesse: **[http://localhost:7475](http://localhost:7475)**
+
+**Passo a passo para conectar:**
+1. Vá até o campo **Connection URL** na parte de baixo da tela inicial.
+2. Apague o `7687` e digite `7688` (ficando `localhost:7688` ou `neo4j://localhost:7688`).
+3. Deixe os campos de **"Database user"** e **"Password"** em branco (pois a autenticação está desativada).
+4. Clique no botão azul **Connect**.
 
 > **💡 Dica:** O Neo4j Browser oferece visualização interativa dos grafos com nós coloridos e arestas animadas — é a melhor forma de explorar dados em grafo.
 
@@ -342,19 +348,22 @@ O diretório `notebooks/` contém **4 notebooks Jupyter** com guias completos e 
 | `03_cassandra.ipynb` | 🔵 Cassandra | Keyspace, Partition Key, Prepared Statements, ALLOW FILTERING |
 | `04_neo4j.ipynb` | 🟡 Neo4j | Nós, Relacionamentos, Travessia de Grafos, Recomendação (amigo de amigo) |
 
-### Como executar os notebooks
+### Como executar os notebooks (com ambiente isolado)
+
+Para garantir que os pacotes Python não entrem em conflito com o seu sistema, utilizamos o **[uv](https://github.com/astral-sh/uv)** (um gerenciador de pacotes ultra-rápido) para criar um ambiente virtual isolado (`.venv`) contendo o Jupyter e os drivers dos bancos de dados.
 
 ```bash
-# 1. Instale o Jupyter (caso ainda não tenha)
-pip install jupyter
+# 1. Configure o ambiente virtual (instala o uv, cria o .venv e baixa as dependências)
+make setup-env
 
-# 2. Inicie o servidor Jupyter na raiz do projeto
-jupyter notebook
+# 2. Inicie o servidor Jupyter Notebook (ou jupyter-lab) no ambiente isolado
+make jupyter
+# ou: make jupyter-lab
 
-# 3. Navegue até a pasta notebooks/ e abra o notebook desejado
+# 3. O navegador será aberto automaticamente. Acesse a pasta notebooks/ e divirta-se!
 ```
 
-> **💡 Dica:** Cada notebook é autocontido — instala suas próprias dependências Python (como `redis`, `pymongo`, `cassandra-driver`, `neo4j`) na primeira célula. Basta executar as células em ordem.
+> **💡 Dica:** Todo o gerenciamento de dependências é feito de forma declarativa pelo arquivo `pyproject.toml`. Os notebooks não precisam de comandos `!pip install` espalhados pelas células, tornando a experiência mais limpa.
 
 ---
 
@@ -380,7 +389,7 @@ O **DataGrip** (da JetBrains) é uma ferramenta integrada para gerenciar, visual
    - **Password**: `mongo`
    - **Database**: `admin` (banco de autenticação).
 5. _Alternativa (via URI):_ Mude para **URL only** e cole:
-   `mongodb://mongo:mongo@localhost:27017/?authSource=admin`
+   `mongodb://mongo:mongo@localhost:27017/?authSource=admin&directConnection=true`
 6. Clique em **Test Connection** e em **OK**.
 
 ### 🔵 3. Apache Cassandra
@@ -398,14 +407,14 @@ O DataGrip **não possui suporte nativo** para o Neo4j. Existem duas opções:
 - **Opção 1: Plugin do Marketplace (Recomendado)**
   1. Acesse **Settings/Preferences** → **Plugins**.
   2. Pesquise por **Graph Database support** ou **GraphDB for Neo4j** no Marketplace e instale.
-  3. Após reiniciar a IDE, configure a conexão apontando para `bolt://localhost:7687` com autenticação **No Auth**.
+  3. Após reiniciar a IDE, configure a conexão apontando para `bolt://localhost:7688` com autenticação **No Auth**.
 
 - **Opção 2: Driver JDBC Manual**
   1. Baixe o `.jar` do driver JDBC oficial do Neo4j.
   2. No DataGrip: **Database Explorer** → `+` (New) → **Driver** → importe o `.jar`.
-  3. Crie um Data Source com URL: `jdbc:neo4j:bolt://localhost:7687` e sem autenticação.
+  3. Crie um Data Source com URL: `jdbc:neo4j:bolt://localhost:7688` e sem autenticação.
 
-> **💡 Recomendação:** Para a melhor experiência com grafos, use o próprio **[Neo4j Browser](http://localhost:7474)** — ele oferece visualização interativa de nós e arestas sem configuração adicional.
+> **💡 Recomendação:** Para a melhor experiência com grafos, use o próprio **[Neo4j Browser](http://localhost:7475)** — ele oferece visualização interativa de nós e arestas sem configuração adicional.
 
 ---
 

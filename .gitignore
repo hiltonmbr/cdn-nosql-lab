@@ -28,3 +28,10 @@ temp/
 
 # Dados locais (caso o usuário decida usar bind mounts no futuro em vez de named volumes)
 data/
+
+# Python / Jupyter
+.venv/
+.env
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
