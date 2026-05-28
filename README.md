@@ -1,6 +1,6 @@
 # NoSQL com Docker & Docker Compose 🐳
 
-Este projeto de caráter educacional demonstra como executar e interagir de forma rápida com quatro diferentes sistemas de bancos de dados **NoSQL**, cada um representando um paradigma diferente. Através do Docker e do Docker Compose, você poderá rodar todas as instâncias localmente com um único comando, permitindo explorar e comparar suas principais características de forma prática.
+Este projeto de caráter educacional demonstra como executar e interagir de forma rápida com diferentes sistemas de bancos de dados (**NoSQL e Relacional**). Através do Docker e do Docker Compose, você poderá rodar todas as instâncias localmente com um único comando, permitindo explorar e comparar suas principais características de forma prática.
 
 ## 📑 Sumário
 
@@ -19,16 +19,17 @@ Este projeto de caráter educacional demonstra como executar e interagir de form
 
 ## 🛠️ Paradigmas de Bancos de Dados Cobertos
 
-Este projeto inclui quatro bancos de dados, cada um representando um paradigma fundamental do universo NoSQL:
+Este projeto inclui cinco bancos de dados, cada um representando um paradigma fundamental:
 
 | Banco de Dados | Paradigma | Imagem Docker | Porta Exposta | CLI |
 |:--|:--|:--|:--|:--|
 | 🔴 **Redis** | Chave-Valor | `redis:alpine` | `6379` | `redis-cli` |
-| 🟢 **MongoDB** | Documento | `mongo:8.3` | `27017` | `mongosh` |
+| 🟢 **MongoDB** | Documento | `mongo:8.0` | `27017` | `mongosh` |
 | 🔵 **Cassandra** | Família de Colunas | `cassandra:5.0.8-bookworm` | `9042` | `cqlsh` |
 | 🟡 **Neo4j** | Grafo | `neo4j:5.26.26-community-ubi10` | `7475` (HTTP) / `7688` (Bolt) | Navegador Web |
+| 🐘 **PostgreSQL** | Relacional | `postgres:17-alpine` | `5432` | `psql` |
 
-### Por que esses quatro?
+### Por que esses cinco?
 
 Cada paradigma resolve um tipo diferente de problema:
 
@@ -36,6 +37,7 @@ Cada paradigma resolve um tipo diferente de problema:
 - **🟢 Documento (MongoDB):** Armazena dados como documentos JSON flexíveis, sem esquema fixo. Perfeito para **catálogos de produtos**, CMS, aplicações com dados semiestruturados e prototipagem rápida.
 - **🔵 Família de Colunas (Cassandra):** Projetado para **escrita massiva** e distribuição geográfica de dados. Excelente para séries temporais (IoT, logs), métricas e sistemas com altíssima disponibilidade.
 - **🟡 Grafo (Neo4j):** Modela dados como redes de entidades e conexões. Superior para **redes sociais**, recomendações, detecção de fraudes e análise de dependências.
+- **🐘 Relacional (PostgreSQL):** Banco de dados relacional clássico e extremamente robusto. Perfeito para dados estruturados, transações complexas (ACID), integridade referencial e consultas relacionais complexas.
 
 ---
 
@@ -105,6 +107,7 @@ Se você tiver o `make` instalado, pode utilizar atalhos simplificados. Execute 
 | `make shell-redis` | Abre a CLI interativa do Redis | `docker exec -it redis redis-cli` |
 | `make shell-mongo` | Abre o shell do MongoDB (com credenciais) | `docker exec -it mongo mongosh -u mongo -p mongo` |
 | `make shell-cassandra` | Abre a CLI do Cassandra | `docker exec -it cassandra cqlsh` |
+| `make shell-postgres` | Abre a CLI do PostgreSQL | `docker exec -it postgres psql -U postgres` |
 
 ---
 
@@ -112,31 +115,32 @@ Se você tiver o `make` instalado, pode utilizar atalhos simplificados. Execute 
 
 ```
 cdn-docker-nosql/
-├── docker-compose.yml    # Define os 4 serviços e volumes persistentes
+├── docker-compose.yml    # Define os 5 serviços e volumes persistentes
 ├── Makefile              # Atalhos para gerenciar o ambiente
 ├── README.md             # Esta documentação
 └── notebooks/            # Guias interativos em Python (Jupyter)
     ├── 01_redis.ipynb        # CRUD, TTL, Hashes, Lists, Sets
     ├── 02_mongodb.ipynb      # CRUD, Projeção, Agregação
     ├── 03_cassandra.ipynb    # Keyspace, Partition Key, Prepared Statements
-    └── 04_neo4j.ipynb        # Nós, Relacionamentos, Cypher, Recomendação
+    ├── 04_neo4j.ipynb        # Nós, Relacionamentos, Cypher, Recomendação
+    └── 05_postgres.ipynb     # CRUD, JSONB, Transações SQL
 ```
 
 ### Diagrama de Serviços
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    Docker Compose Network                    │
-│                                                             │
-│   ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  │
-│   │  Redis   │  │ MongoDB  │  │Cassandra │  │  Neo4j   │  │
-│   │ :6379    │  │ :27017   │  │ :9042    │  │ :7475    │  │
-│   │          │  │          │  │          │  │ :7688    │  │
-│   └────┬─────┘  └────┬─────┘  └────┬─────┘  └────┬─────┘  │
-│        │             │             │              │         │
-│   redis_data    mongo_data   cassandra_data  neo4j_data    │
-│   (volume)      (volume)      (volume)       (volume)      │
-└─────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────────┐
+│                          Docker Compose Network                          │
+│                                                                          │
+│   ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐   │
+│   │  Redis   │  │ MongoDB  │  │Cassandra │  │  Neo4j   │  │PostgreSQL│   │
+│   │ :6379    │  │ :27017   │  │ :9042    │  │ :7475    │  │ :5432    │   │
+│   │          │  │          │  │          │  │ :7688    │  │          │   │
+│   └────┬─────┘  └────┬─────┘  └────┬─────┘  └────┬─────┘  └────┬─────┘   │
+│        │             │             │              │            │         │
+│   redis_data    mongo_data   cassandra_data  neo4j_data   postgres_data  │
+│   (volume)      (volume)      (volume)       (volume)     (volume)       │
+└──────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
@@ -337,9 +341,49 @@ RETURN amigo.nome, amigo.idade;
 
 ---
 
+### 🐘 5. PostgreSQL (Relacional)
+
+O PostgreSQL é um banco de dados relacional clássico extremamente poderoso, que utiliza SQL e oferece transações ACID complexas, integridade de dados e suporte a consultas complexas.
+
+| Propriedade | Valor |
+|:--|:--|
+| **Porta** | `5432` |
+| **Autenticação** | Usuário `postgres` / Senha `postgres` |
+| **Banco de Dados** | `postgres` |
+| **URI de Conexão** | `postgresql://postgres:postgres@localhost:5432/postgres` |
+| **Linguagem de consulta** | SQL |
+
+**Conectar via CLI:**
+
+```bash
+docker exec -it postgres psql -U postgres
+# ou: make shell-postgres
+```
+
+**Exemplos de Operações (SQL):**
+
+```sql
+-- Criar uma tabela
+CREATE TABLE estudantes (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    curso VARCHAR(100),
+    email VARCHAR(100) UNIQUE
+);
+
+-- Inserir registros
+INSERT INTO estudantes (nome, curso, email)
+VALUES ('Felipe Souza', 'Ciência da Computação', 'felipe@email.com');
+
+-- Consulta
+SELECT * FROM estudantes WHERE curso = 'Ciência da Computação';
+```
+
+---
+
 ## 📓 Notebooks Python (Guias Interativos)
 
-O diretório `notebooks/` contém **4 notebooks Jupyter** com guias completos e interativos para cada banco de dados. Cada notebook cobre:
+O diretório `notebooks/` contém **5 notebooks Jupyter** com guias completos e interativos para cada banco de dados. Cada notebook cobre:
 
 | Notebook | Banco | Tópicos Cobertos |
 |:--|:--|:--|
@@ -347,6 +391,7 @@ O diretório `notebooks/` contém **4 notebooks Jupyter** com guias completos e 
 | `02_mongodb.ipynb` | 🟢 MongoDB | Conexão, CRUD com Documentos, Filtros, Projeção, Aggregation Pipeline |
 | `03_cassandra.ipynb` | 🔵 Cassandra | Keyspace, Partition Key, Prepared Statements, ALLOW FILTERING |
 | `04_neo4j.ipynb` | 🟡 Neo4j | Nós, Relacionamentos, Travessia de Grafos, Recomendação (amigo de amigo) |
+| `05_postgres.ipynb` | 🐘 PostgreSQL | Conexão, CRUD com Tabelas, Recursos Híbridos/Documentais (JSONB), Transações |
 
 ### Como executar os notebooks (com ambiente isolado)
 
@@ -416,6 +461,17 @@ O DataGrip **não possui suporte nativo** para o Neo4j. Existem duas opções:
 
 > **💡 Recomendação:** Para a melhor experiência com grafos, use o próprio **[Neo4j Browser](http://localhost:7475)** — ele oferece visualização interativa de nós e arestas sem configuração adicional.
 
+### 🐘 5. PostgreSQL
+
+1. Clique no botão `+` → **Data Source** → **PostgreSQL**.
+2. No campo **Host**, insira `localhost`.
+3. No campo **Port**, insira `5432`.
+4. No campo **Authentication**, selecione **User & Password**:
+   - **User**: `postgres`
+   - **Password**: `postgres`
+   - **Database**: `postgres`
+5. Clique em **Test Connection** (se solicitado, permita o download do driver JDBC) e depois em **OK**.
+
 ---
 
 ## 💾 Persistência de Dados
@@ -428,6 +484,7 @@ O projeto utiliza **volumes Docker nomeados** para garantir que os dados sejam p
 | `mongo_data` | MongoDB | Bancos de dados, coleções e índices |
 | `cassandra_data` | Cassandra | SSTables, commit logs e dados de partição |
 | `neo4j_data` | Neo4j | Nós, relacionamentos e índices do grafo |
+| `postgres_data` | PostgreSQL | Tabelas, índices, esquemas e transações do banco de dados |
 
 ### Cenários comuns
 
