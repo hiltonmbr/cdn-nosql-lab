@@ -1,4 +1,4 @@
-.PHONY: help up down status logs clean shell-redis shell-mongo shell-cassandra setup-env jupyter jupyter-lab clean-env
+.PHONY: help up down status logs clean shell-redis shell-mongo shell-cassandra shell-postgres setup-env jupyter jupyter-lab clean-env
 
 # Variáveis
 COMPOSE = docker compose
@@ -60,3 +60,7 @@ shell-mongo: ## 🟢 Abre o shell interativo do MongoDB
 
 shell-cassandra: ## 🔵 Abre a CLI interativa do Cassandra
 	docker exec -it cassandra cqlsh
+
+shell-postgres: ## 🐘 Abre a CLI interativa do PostgreSQL
+	docker exec -it postgres psql -U postgres
+
