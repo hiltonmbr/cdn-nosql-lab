@@ -1,66 +1,66 @@
 .PHONY: help up down status logs clean shell-redis shell-mongo shell-cassandra shell-postgres setup-env jupyter jupyter-lab clean-env
 
-# Variáveis
+# Variables
 COMPOSE = docker compose
 UV_BIN := $(shell command -v uv 2> /dev/null)
 
-help: ## ❓ Exibe esta mensagem de ajuda
-	@echo "Uso: make [target]"
+help: ## ❓ Show this help message
+	@echo "Usage: make [target]"
 	@echo ""
-	@echo "Targets disponíveis:"
+	@echo "Available targets:"
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
-# --- AMBIENTE VIRTUAL E NOTEBOOKS ---
+# --- VIRTUAL ENVIRONMENT & NOTEBOOKS ---
 
-setup-env: ## 🐍 Cria o ambiente virtual (.venv) e instala dependências via uv
+setup-env: ## 🐍 Create virtual environment (.venv) and install dependencies via uv
 ifndef UV_BIN
-	@echo "⚠️  uv não encontrado. Instalando o uv (gerenciador de pacotes ultra-rápido)..."
+	@echo "⚠️  uv not found. Installing uv (ultra-fast package manager)..."
 	curl -LsSf https://astral.sh/uv/install.sh | sh
 endif
-	@echo "🔄 Sincronizando dependências com uv..."
+	@echo "🔄 Syncing dependencies with uv..."
 	uv sync
-	@echo "✅ Ambiente configurado com sucesso! Use 'make jupyter' para abrir os notebooks."
+	@echo "✅ Environment ready! Run 'make jupyter' to open the notebooks."
 
-jupyter: ## 📓 Inicia o servidor Jupyter Notebook no ambiente isolado
-	@echo "🚀 Iniciando Jupyter Notebook..."
+jupyter: ## 📓 Start Jupyter Notebook server in the isolated environment
+	@echo "🚀 Starting Jupyter Notebook..."
 	uv run jupyter notebook --notebook-dir=notebooks
 
-jupyter-lab: ## 🔬 Inicia o JupyterLab (IDE avançada) no ambiente isolado
-	@echo "🚀 Iniciando JupyterLab..."
+jupyter-lab: ## 🔬 Start JupyterLab (advanced IDE) in the isolated environment
+	@echo "🚀 Starting JupyterLab..."
 	uv run jupyter lab --notebook-dir=notebooks
 
-clean-env: ## 🧹 Remove o ambiente virtual Python isolado (.venv)
+clean-env: ## 🧹 Remove the isolated Python virtual environment (.venv)
 	rm -rf .venv
-	@echo "🗑️ Ambiente virtual removido."
+	@echo "🗑️ Virtual environment removed."
 
-# --- SERVIÇOS DOCKER (Bancos de Dados) ---
+# --- DOCKER SERVICES (Databases) ---
 
-up: ## 🐳 Inicializa todos os serviços do compose em background
+up: ## 🐳 Start all compose services in background
 	$(COMPOSE) up -d
 
-down: ## 🛑 Para todos os serviços do compose mantendo volumes intactos
+down: ## 🛑 Stop all compose services keeping volumes intact
 	$(COMPOSE) down
 
-status: ## 📊 Exibe o status e portas dos containers ativos
+status: ## 📊 Show status and ports of active containers
 	$(COMPOSE) ps
 
-logs: ## 📜 Exibe e acompanha os logs em tempo real
+logs: ## 📜 Tail logs in real time
 	$(COMPOSE) logs -f
 
-clean: ## 🧨 Remove os containers e exclui permanentemente os dados
+clean: ## 🧨 Remove containers and permanently delete all data
 	$(COMPOSE) down -v
 
-# --- TERMINAIS DE BANCO DE DADOS (CLI) ---
+# --- DATABASE CLIs ---
 
-shell-redis: ## 🔴 Abre a CLI interativa do Redis
+shell-redis: ## 🔴 Open interactive Redis CLI
 	docker exec -it redis redis-cli
 
-shell-mongo: ## 🟢 Abre o shell interativo do MongoDB
+shell-mongo: ## 🟢 Open interactive MongoDB shell
 	docker exec -it mongo mongosh -u mongo -p mongo
 
-shell-cassandra: ## 🔵 Abre a CLI interativa do Cassandra
+shell-cassandra: ## 🔵 Open interactive Cassandra CLI
 	docker exec -it cassandra cqlsh
 
-shell-postgres: ## 🐘 Abre a CLI interativa do PostgreSQL
+shell-postgres: ## 🐘 Open interactive PostgreSQL CLI
 	docker exec -it postgres psql -U postgres
 
