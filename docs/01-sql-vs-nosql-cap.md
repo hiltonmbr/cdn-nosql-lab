@@ -1,115 +1,115 @@
-# ⚖️ O Desafio da Escala: SQL vs NoSQL e o Teorema CAP
+# ⚖️ The Scale Challenge: SQL vs NoSQL and the CAP Theorem
 
-Seja muito bem-vindo à base teórica do nosso **Laboratório NoSQL**! 
+Welcome to the theoretical foundation of our **NoSQL Lab**!
 
-Antes de colocarmos as mãos na massa com os bancos de dados nos *notebooks*, é essencial entender **por que** o movimento NoSQL surgiu e que problemas ele tenta resolver.
+Before we dive hands-on with the databases in the *notebooks*, it is essential to understand **why** the NoSQL movement emerged and what problems it attempts to solve.
 
 ---
 
-## 📍 O Problema da Escala no Big Data
+## 📍 The Problem of Scale in Big Data
 
-Durante as décadas de 1980, 1990 e início dos anos 2000, os Bancos de Dados Relacionais (como o **PostgreSQL** que temos no nosso lab, além de Oracle, MySQL, etc.) dominaram o mercado de forma absoluta.
+During the 1980s, 1990s, and early 2000s, Relational Databases (such as **PostgreSQL** which we have in our lab, as well as Oracle, MySQL, etc.) dominated the market absolutely.
 
-No entanto, com a explosão da internet, empresas como Google, Amazon e Facebook começaram a lidar com um volume de dados sem precedentes. O paradigma relacional tradicional enfrentou um limite físico.
+However, with the explosion of the internet, companies like Google, Amazon, and Facebook began dealing with an unprecedented volume of data. The traditional relational paradigm faced a physical limit.
 
-### Escala Vertical vs Escala Horizontal
+### Vertical Scale vs Horizontal Scale
 
-Quando um banco de dados relacional precisa de mais capacidade (para lidar com mais requisições ou mais dados), a abordagem padrão é a **Escala Vertical** (*Scale-up*):
-- ⬆️ Adicionar mais memória RAM
-- ⬆️ Trocar o processador por um mais potente
-- ⬆️ Adicionar discos mais rápidos
+When a relational database needs more capacity (to handle more requests or more data), the standard approach is **Vertical Scaling** (*Scale-up*):
+- ⬆️ Add more RAM
+- ⬆️ Upgrade the processor to a more powerful one
+- ⬆️ Add faster disks
 
 > [!WARNING]
-> **O limite do Servidor Único**
-> Existe um limite físico para o quão grande (e caro) um único servidor pode ser. Se esse mega-servidor falhar, todos os dados ficam indisponíveis. A escala vertical é finita e extremamente custosa no longo prazo.
+> **The Single Server Limit**
+> There is a physical limit to how large (and expensive) a single server can be. If that mega-server fails, all data becomes unavailable. Vertical scaling is finite and extremely costly in the long run.
 
-A resposta da indústria a esse problema foi a **Escala Horizontal** (*Scale-out*):
-- ➡️ Adicionar múltiplos servidores comuns (baratos) à rede e fazer com que eles trabalhem juntos como um único sistema (um **cluster**).
+The industry's answer to this problem was **Horizontal Scaling** (*Scale-out*):
+- ➡️ Add multiple common (cheap) servers to the network and make them work together as a single system (a **cluster**).
 
-Bancos relacionais são difíceis de escalar horizontalmente de forma eficiente porque garantem a integridade referencial (os relacionamentos) e a transacionalidade de todo o banco. Foi aqui que surgiu a necessidade de novos paradigmas: o **NoSQL**.
+Relational databases are difficult to scale horizontally efficiently because they guarantee referential integrity (relationships) and transactional consistency across the entire database. This is where the need for new paradigms emerged: **NoSQL**.
 
 ---
 
-## 🔐 Garantias ACID (O Mundo Relacional)
+## 🔐 ACID Guarantees (The Relational World)
 
-O **PostgreSQL** (nosso banco relacional no laboratório) é um exemplo máximo de sistema que segue estritamente as propriedades **ACID**:
+**PostgreSQL** (our relational database in the lab) is a prime example of a system that strictly follows **ACID** properties:
 
-- **A (Atomicidade):** Tudo ou nada. Em uma transação bancária de transferência, sacar de uma conta e depositar na outra são executados em bloco. Se um falhar, o banco desfaz o outro.
-- **C (Consistência):** Os dados sempre estão em um estado válido, obedecendo regras (como saldo >= 0).
-- **I (Isolamento):** Duas transações concorrentes não interferem uma na outra. 
-- **D (Durabilidade):** Uma vez confirmada a transação (o "Commit"), o dado está salvo mesmo se o servidor pegar fogo.
+- **A (Atomicity):** All or nothing. In a bank transfer transaction, withdrawing from one account and depositing into another are executed as a block. If one fails, the database undoes the other.
+- **C (Consistency):** Data is always in a valid state, obeying rules (such as balance >= 0).
+- **I (Isolation):** Two concurrent transactions do not interfere with each other.
+- **D (Durability):** Once a transaction is committed (the "Commit"), the data is saved even if the server catches fire.
 
 > [!TIP]
-> **Quando usar SQL?**
-> Para sistemas financeiros, faturamento, folha de pagamento e sistemas onde a consistência absoluta é inegociável e inquestionável, o modelo relacional continua sendo o rei absoluto.
+> **When to use SQL?**
+> For financial systems, billing, payroll, and systems where absolute consistency is non-negotiable and unquestionable, the relational model remains the absolute king.
 
 ---
 
-## 🌐 O Movimento NoSQL
+## 🌐 The NoSQL Movement
 
-O termo **NoSQL** (*Not Only SQL*) ganhou força em 2009 para descrever sistemas de armazenamento projetados primariamente para **escala horizontal nativa**, lidando com *petabytes* de dados.
+The term **NoSQL** (*Not Only SQL*) gained traction in 2009 to describe storage systems primarily designed for **native horizontal scaling**, handling *petabytes* of data.
 
-Eles deliberadamente abrem mão de certas propriedades do modelo relacional (como *joins* complexos nativos ou schema rígido) em troca de performance, flexibilidade e disponibilidade.
+They deliberately forgo certain properties of the relational model (such as native complex *joins* or rigid schema) in exchange for performance, flexibility, and availability.
 
-**Características comuns dos bancos NoSQL:**
-1. **Schema Flexível (*Schema-on-Read*):** A estrutura dos dados não precisa ser estritamente definida de antemão. Isso lida brilhantemente com dados semi-estruturados (JSON).
-2. **Escalabilidade Horizontal Nativa:** Adicionar um novo servidor à rede é uma operação de rotina, e o banco redistribui os dados automaticamente (exemplo clássico: o **Cassandra**).
+**Common characteristics of NoSQL databases:**
+1. **Flexible Schema (*Schema-on-Read*):** The data structure does not need to be strictly defined in advance. This brilliantly handles semi-structured data (JSON).
+2. **Native Horizontal Scalability:** Adding a new server to the network is a routine operation, and the database automatically redistributes the data (classic example: **Cassandra**).
 
-### 🧱 BASE: A Alternativa ao ACID
+### 🧱 BASE: The Alternative to ACID
 
-Enquanto o mundo relacional se apoia no rígido modelo ACID, muitos bancos NoSQL (especialmente os projetados para altíssima escala) adotam a semântica **BASE**:
+While the relational world relies on the rigid ACID model, many NoSQL databases (especially those designed for very high scale) adopt the **BASE** semantics:
 
-- **B**asically **A**vailable (Basicamente Disponível): O sistema garante que a aplicação sempre receba uma resposta, maximizando a disponibilidade contínua.
-- **S**oft state (Estado Flexível): O estado do sistema pode mudar com o tempo, mesmo sem novas operações de escrita, pois as réplicas espalhadas pelo mundo estão se sincronizando em background.
-- **E**ventual consistency (Consistência Eventual): O sistema não garante que o dado estará consistente no milissegundo seguinte à escrita, mas garante que **eventualmente** (geralmente em milissegundos) todas as réplicas convergirão para o estado final.
+- **B**asically **A**vailable: The system guarantees that the application always receives a response, maximizing continuous availability.
+- **S**oft state: The system state may change over time, even without new write operations, as replicas spread across the world synchronize in the background.
+- **E**ventual consistency: The system does not guarantee that the data will be consistent the millisecond after a write, but it guarantees that **eventually** (usually in milliseconds) all replicas will converge to the final state.
 
-### 🔪 Sharding (Particionamento Horizontal)
+### 🔪 Sharding (Horizontal Partitioning)
 
-Outro conceito vital no NoSQL é o **Sharding** (ou particionamento). Em vez de tentar colocar todos os 10 Terabytes de dados em um único disco gigante, o banco divide a carga matematicamente entre dezenas de servidores menores.
+Another vital concept in NoSQL is **Sharding**. Instead of trying to place all 10 Terabytes of data on a single giant disk, the database mathematically divides the load across dozens of smaller servers.
 
-Quando você insere um dado, o sistema usa uma **Shard Key** (Chave de Partição) — como o `ID do Usuário` ou a `Região` — para calcular um *hash*. Esse hash determina fisicamente em qual servidor o dado será armazenado. É isso que permite que bancos como o MongoDB e Cassandra processem centenas de milhares de requisições por segundo: eles paralelizam o trabalho!
+When you insert a piece of data, the system uses a **Shard Key** (Partition Key) — such as `User ID` or `Region` — to compute a *hash*. This hash physically determines which server will store the data. This is what allows databases like MongoDB and Cassandra to process hundreds of thousands of requests per second: they parallelize the work!
 
 ---
 
-## ⚖️ O Teorema CAP
+## ⚖️ The CAP Theorem
 
-Para entender como os bancos distribuídos fazem escolhas de arquitetura, existe um pilar teórico fundamental chamado **Teorema CAP**, formulado por Eric Brewer no ano 2000.
+To understand how distributed databases make architectural choices, there is a fundamental theoretical pillar called the **CAP Theorem**, formulated by Eric Brewer in the year 2000.
 
-O teorema afirma que é **impossível** que um sistema de armazenamento de dados distribuído forneça simultaneamente as seguintes três garantias:
+The theorem states that it is **impossible** for a distributed data storage system to simultaneously provide the following three guarantees:
 
-1. **C (Consistency - Consistência):** Todos os nós (servidores) do cluster enxergam exatamente o mesmo dado ao mesmo tempo. Se você escrever um dado no nó A, uma leitura no nó B retornará o dado mais recente.
-2. **A (Availability - Disponibilidade):** O sistema sempre responde (com sucesso ou falha), independentemente do estado individual de qualquer nó. O sistema não "trava".
-3. **P (Partition Tolerance - Tolerância a Partições):** O sistema continua funcionando mesmo se a rede que liga os nós se romper (uma partição de rede).
+1. **C (Consistency):** All nodes (servers) in the cluster see exactly the same data at the same time. If you write data to node A, a read from node B will return the most recent data.
+2. **A (Availability):** The system always responds (with success or failure), regardless of the individual state of any node. The system does not "hang."
+3. **P (Partition Tolerance):** The system continues to function even if the network connecting the nodes is disrupted (a network partition).
 
 > [!IMPORTANT]
-> **A dura realidade das redes**
-> Em qualquer sistema distribuído real através da rede, falhas de comunicação **vão** acontecer. Portanto, a Tolerância a Partições (P) não é opcional, é uma restrição do mundo físico. Assim, em caso de falha de rede, um banco distribuído precisa escolher entre **Consistência** ou **Disponibilidade**.
+> **The harsh reality of networks**
+> In any real distributed system across a network, communication failures **will** happen. Therefore, Partition Tolerance (P) is not optional; it is a constraint of the physical world. Thus, in the event of a network failure, a distributed database must choose between **Consistency** or **Availability**.
 
-### Os Bancos e o CAP
+### Databases and CAP
 
-No nosso laboratório, temos sistemas que adotam posturas diferentes diante do CAP:
+In our lab, we have systems that adopt different postures regarding CAP:
 
-- O **Cassandra** escolhe **AP (Disponibilidade e Partição)**: Se a rede cair, ele aceita que diferentes nós tenham versões ligeiramente desatualizadas dos dados (Consistência Eventual), mas ele **nunca para de responder** e aceitar novas inserções (altíssima disponibilidade).
-- O **MongoDB** (dependendo da configuração do cluster) tende a focar em **CP (Consistência e Partição)**: Em caso de falha grave na rede, ele prefere paralisar a escrita para evitar que dados inconsistentes sejam lidos ou escritos.
+- **Cassandra** chooses **AP (Availability and Partition Tolerance)**: If the network goes down, it accepts that different nodes may have slightly outdated versions of the data (Eventual Consistency), but it **never stops responding** and accepting new writes (very high availability).
+- **MongoDB** (depending on cluster configuration) tends to focus on **CP (Consistency and Partition Tolerance)**: In case of a severe network failure, it prefers to halt writes to prevent inconsistent data from being read or written.
 
-### 🗳️ Quórum e Consistência Ajustável (Tunable Consistency)
+### 🗳️ Quorum and Tunable Consistency
 
-Em bancos NoSQL como o Cassandra, você não está preso de forma rígida ao "AP" absoluto. Você pode **ajustar** o nível de consistência a cada consulta ou inserção através do conceito de **Quórum** (maioria).
+In NoSQL databases like Cassandra, you are not rigidly stuck with absolute "AP." You can **adjust** the consistency level per query or insert through the concept of **Quorum** (majority).
 
-Imagine um cluster onde os dados são replicados em 3 servidores (Fator de Replicação = 3).
-- **Leitura/Escrita com Quórum:** Você exige que a maioria dos nós (2 de 3) confirmem a operação. Se 1 nó cair, o sistema continua funcionando.
-- **Leitura/Escrita nível ONE (Rápida, Menos Consistente):** Basta 1 nó confirmar. É extremamente rápido, mas o dado pode estar desatualizado em relação aos outros nós.
-- **Leitura/Escrita nível ALL (Lenta, Muito Consistente):** Todos os 3 nós devem confirmar. Você ganha consistência absoluta, mas perde disponibilidade (se 1 nó cair, a operação falha).
+Imagine a cluster where data is replicated across 3 servers (Replication Factor = 3).
+- **Read/Write with Quorum:** You require the majority of nodes (2 out of 3) to confirm the operation. If 1 node goes down, the system continues operating.
+- **Read/Write at ONE level (Fast, Less Consistent):** Only 1 node needs to confirm. It is extremely fast, but the data may be outdated compared to other nodes.
+- **Read/Write at ALL level (Slow, Very Consistent):** All 3 nodes must confirm. You gain absolute consistency, but lose availability (if 1 node goes down, the operation fails).
 
 > [!TIP]
-> A fórmula mágica do Cassandra para garantir Consistência Forte mesmo sendo um banco AP é garantir que:
-> **Nós Lidos + Nós Escritos > Fator de Replicação**. 
-> Exemplo: Lendo de 2 nós e escrevendo em 2 nós (num cluster de 3), você sempre terá a interseção com o dado mais recente!
+> Cassandra's magic formula for ensuring Strong Consistency even as an AP database is to guarantee that:
+> **Nodes Read + Nodes Written > Replication Factor**.
+> Example: Reading from 2 nodes and writing to 2 nodes (in a cluster of 3), you will always intersect with the most recent data!
 
 ---
 
-## 🚀 Próximos Passos
+## 🚀 Next Steps
 
-Agora que entendemos *por que* os modelos mudaram, precisamos entender as *diferentes formas* de organizar a informação.
+Now that we understand *why* the models changed, we need to understand the *different ways* of organizing information.
 
-Avance para o próximo artigo para explorar os diferentes paradigmas: **[Explorando os Modelos de Dados NoSQL](./02-paradigmas-nosql.md)**.
+Move on to the next article to explore the different paradigms: **[Exploring NoSQL Data Models](./02-nosql-paradigms.md)**.
