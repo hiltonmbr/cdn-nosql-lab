@@ -57,9 +57,48 @@ services:
       - postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
 
+  dbgate:
+    container_name: dbgate
+    image: dbgate/dbgate:alpine
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - dbgate_data:/root/.dbgate
+    environment:
+      CONNECTIONS: postgres,mongo,redis,cassandra
+
+      LABEL_postgres: PostgreSQL
+      SERVER_postgres: postgres
+      USER_postgres: postgres
+      PASSWORD_postgres: postgres
+      PORT_postgres: 5432
+      ENGINE_postgres: postgres@dbgate-plugin-postgres
+      DATABASE_postgres: postgres
+
+      LABEL_mongo: MongoDB
+      URL_mongo: mongodb://mongo:mongo@mongo:27017/?authSource=admin
+      ENGINE_mongo: mongo@dbgate-plugin-mongo
+
+      LABEL_redis: Redis
+      SERVER_redis: redis
+      PORT_redis: 6379
+      ENGINE_redis: redis@dbgate-plugin-redis
+
+      LABEL_cassandra: Cassandra
+      SERVER_cassandra: cassandra
+      PORT_cassandra: 9042
+      ENGINE_cassandra: cassandra@dbgate-plugin-cassandra
+    depends_on:
+      - postgres
+      - mongo
+      - redis
+      - cassandra
+
 volumes:
   redis_data:
   mongo_data:
   cassandra_data:
   neo4j_data:
   postgres_data:
+  dbgate_data:
