@@ -56,12 +56,14 @@ To run the labs, ensure your machine meets the following requirements:
 | **Docker Compose** | Already bundled with Docker Desktop (orchestrates our 5 services) |
 | **Make (optional)** | Used for terminal shortcuts. If you don't have it, use raw Docker commands. |
 | **Python 3.8+** | Recommended for running notebooks in a Python virtual environment. |
+| **uv** | Fast Python package installer and resolver. Essential for `make setup-env` ([Installation](https://docs.astral.sh/uv/getting-started/installation/)) |
 | **Resources** | 8GB RAM or more is recommended. |
 
 Verify the installation of the vital tools:
 ```bash
 docker version
 docker compose version
+uv --version
 ```
 
 ---
