@@ -51,14 +51,14 @@ Your browser will open automatically with the interactive exercise notebooks in 
 
 To run the labs, ensure your machine meets the following requirements:
 
-| Requirement         | Details                                                                                                                                              |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Docker Engine**   | Essential to instantiate databases in isolation ([Installation](https://docs.docker.com/get-docker/))                                                |
-| **Docker Compose**  | Already bundled with Docker Desktop (orchestrates our 5 services)                                                                                    |
-| **Make (optional)** | Used for terminal shortcuts. If you don't have it, use raw Docker commands.                                                                          |
-| **Python 3.8+**     | Recommended for running notebooks in a Python virtual environment.                                                                                   |
+| Requirement         | Details                                                                                                                              |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------- |
+| **Docker Engine**   | Essential to instantiate databases in isolation ([Installation](https://docs.docker.com/get-docker/))                                |
+| **Docker Compose**  | Already bundled with Docker Desktop (orchestrates our 5 services)                                                                    |
+| **Make (optional)** | Used for terminal shortcuts. If you don't have it, use raw Docker commands.                                                          |
+| **Python 3.8+**     | Recommended for running notebooks in a Python virtual environment.                                                                   |
 | **uv**              | Fast Python package installer and resolver. Essential for `make setup-env`. Install with `curl -LsSf https://astral.sh/uv/install.sh | sh` or see [official docs](https://docs.astral.sh/uv/getting-started/installation/) |
-| **Resources**       | 8GB RAM or more is recommended.                                                                                                                      |
+| **Resources**       | 8GB RAM or more is recommended.                                                                                                      |
 
 Verify the installation of the vital tools:
 
@@ -104,17 +104,17 @@ Below is the architecture of the database fleet running through Docker Compose, 
 
 ```mermaid
 graph TD
-    subgraph DC["Docker Compose Network (Isolada)"]
+    subgraph DC["Docker Compose Network (Isolated)"]
 
-        redis["🔴 Redis<br>Chave-Valor<br>Porta: 6379"]
-        mongo["🟢 MongoDB<br>Documento<br>Porta: 27017"]
-        cassandra["🔵 Cassandra<br>Colunas Largas<br>Porta: 9042"]
-        neo4j["🟡 Neo4j<br>Grafo<br>Porta: 7475 / 7688"]
-        postgres["🐘 PostgreSQL<br>Relacional<br>Porta: 5432"]
+        redis["🔴 Redis<br>Key-Value<br>Port: 6379"]
+        mongo["🟢 MongoDB<br>Document<br>Port: 27017"]
+        cassandra["🔵 Cassandra<br>Wide-Column<br>Port: 9042"]
+        neo4j["🟡 Neo4j<br>Graph<br>Port: 7475 / 7688"]
+        postgres["🐘 PostgreSQL<br>Relational<br>Port: 5432"]
 
     end
 
-    subgraph "Volumes Docker (Persistência)"
+    subgraph "Docker Volumes (Persistence)"
         v_redis[(redis_data)]
         v_mongo[(mongo_data)]
         v_cass[(cassandra_data)]
@@ -122,15 +122,15 @@ graph TD
         v_pg[(postgres_data)]
     end
 
-    %% Ligações com Volumes
+    %% Volume Connections
     redis -.-> v_redis
     mongo -.-> v_mongo
     cassandra -.-> v_cass
     neo4j -.-> v_neo
     postgres -.-> v_pg
 
-    %% Ambiente Local / Python
-    local["💻 Máquina Local do Estudante<br>(Python Jupyter / IDE DataGrip)"]
+    %% Local Environment / Python
+    local["💻 Localhost<br>(Jupyter / DataGrip IDE)"]
 
     local ==> redis
     local ==> mongo
