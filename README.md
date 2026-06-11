@@ -26,7 +26,7 @@ A **hands-on laboratory** to explore the data revolution. Over the last decades,
 
 ## ⚡ Quick Start (5 minutes)
 
-If you already have Docker and `make` installed, you can start the lab in three simple steps:
+If you already have Docker, `make`, and `uv` installed, you can start the lab in three simple steps:
 
 ```bash
 # 1. Clone the repository
@@ -57,7 +57,7 @@ To run the labs, ensure your machine meets the following requirements:
 | **Docker Compose**  | Already bundled with Docker Desktop (orchestrates our 5 services)                                                                                    |
 | **Make (optional)** | Used for terminal shortcuts. If you don't have it, use raw Docker commands.                                                                          |
 | **Python 3.8+**     | Recommended for running notebooks in a Python virtual environment.                                                                                   |
-| **uv**              | Fast Python package installer and resolver. Essential for `make setup-env` ([Installation](https://docs.astral.sh/uv/getting-started/installation/)) |
+| **uv**              | Fast Python package installer and resolver. Essential for `make setup-env`. Install with `curl -LsSf https://astral.sh/uv/install.sh | sh` or see [official docs](https://docs.astral.sh/uv/getting-started/installation/) |
 | **Resources**       | 8GB RAM or more is recommended.                                                                                                                      |
 
 Verify the installation of the vital tools:
