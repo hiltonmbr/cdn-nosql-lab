@@ -52,7 +52,7 @@ Your browser will open automatically with the interactive exercise notebooks in 
 To run the labs, ensure your machine meets the following requirements:
 
 | Requirement         | Details                                                                                                                              |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------- |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
 | **Docker Engine**   | Essential to instantiate databases in isolation ([Installation](https://docs.docker.com/get-docker/))                                |
 | **Docker Compose**  | Already bundled with Docker Desktop (orchestrates our 5 services)                                                                    |
 | **Make (optional)** | Used for terminal shortcuts. If you don't have it, use raw Docker commands.                                                          |
