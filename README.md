@@ -1,7 +1,7 @@
-# 🧪 Laboratório de Bancos de Dados: SQL e NoSQL
+# 🧪 Database Laboratory: SQL and NoSQL
 
-### **O Guia Prático para Escala e Persistência de Dados Modernos**
-Experimente os cinco principais paradigmas de bancos de dados do mercado rodando simultaneamente na sua máquina local, com teoria embasada e código iterativo.
+### **The Practical Guide to Modern Data Scale and Persistence**
+Experiment the five main database paradigms on the market running simultaneously on your local machine, with well-grounded theory and iterative code.
 
 ![Docker](https://img.shields.io/badge/Docker-27.x-2496ED?logo=docker&logoColor=white)
 ![Docker Compose](https://img.shields.io/badge/Compose-v2-2496ED?logo=docker&logoColor=white)
@@ -11,54 +11,54 @@ Experimente os cinco principais paradigmas de bancos de dados do mercado rodando
 
 ---
 
-## 🎯 O que é este repositório?
+## 🎯 What is this repository?
 
-Um **laboratório hands-on** para explorar a revolução dos dados. Durante as últimas décadas, saímos do reinado absoluto do modelo Relacional para a diversidade arquitetural do movimento NoSQL. Aqui, você experimentará ambos:
+A **hands-on laboratory** to explore the data revolution. Over the last decades, we have moved from the absolute reign of the Relational model to the architectural diversity of the NoSQL movement. Here, you will experience both:
 
-- 📖 **Documentação Rica** — Teoria baseada em fundamentos sólidos (ACID, Teorema CAP e Padrões de Acesso).
-- ⚙️ **Ambiente de Teste Universal** — Suba um cluster com os 5 principais bancos com 1 único comando.
-- 💻 **Guias Interativos (Labs)** — Interaja de verdade usando Python e Jupyter Notebooks.
+- 📖 **Rich Documentation** — Theory based on solid foundations (ACID, CAP Theorem, and Access Patterns).
+- ⚙️ **Universal Test Environment** — Spin up a cluster with the 5 main databases with a single command.
+- 💻 **Interactive Guides (Labs)** — Interact for real using Python and Jupyter Notebooks.
 
-> **Público-alvo:** Estudantes, cientistas de dados e engenheiros que querem dominar a persistência de dados moderna, entendendo o porquê de cada escolha arquitetural.
+> **Target audience:** Students, data scientists, and engineers who want to master modern data persistence, understanding the reasoning behind each architectural choice.
 
 ---
 
-## ⚡ Quick Start (5 minutos)
+## ⚡ Quick Start (5 minutes)
 
-Se você já tem o Docker e o `make` instalados, pode iniciar o laboratório em três passos simples:
+If you already have Docker and `make` installed, you can start the lab in three simple steps:
 
 ```bash
-# 1. Clone o repositório
+# 1. Clone the repository
 git clone https://github.com/hiltonmbr/cdn-docker-nosql.git
 cd cdn-docker-nosql
 
-# 2. Inicie a infraestrutura de Bancos de Dados (roda em background)
+# 2. Start the Database infrastructure (runs in background)
 make up
 
-# 3. Configure o ambiente Python virtual e inicie os Laboratórios
+# 3. Set up the Python virtual environment and start the Labs
 make setup-env
 make jupyter
 ```
 
-Seu navegador será aberto automaticamente com os cadernos de exercícios interativos na pasta `notebooks/`.
+Your browser will open automatically with the interactive exercise notebooks in the `notebooks/` folder.
 
-> **⚠️ Observação sobre o Cassandra:** A inicialização do Cassandra é intensa para o sistema. Pode demorar de 1 a 2 minutos para ele ficar pronto para receber conexões após o `make up`.
+> **⚠️ Note about Cassandra:** Cassandra's startup is intensive on the system. It may take 1 to 2 minutes for it to be ready to accept connections after `make up`.
 
 ---
 
-## ⚙️ Pré-requisitos
+## ⚙️ Prerequisites
 
-Para realizar os laboratórios, garanta que sua máquina cumpra os seguintes requisitos:
+To run the labs, ensure your machine meets the following requirements:
 
-| Requisito | Detalhes |
+| Requirement | Details |
 |---|---|
-| **Docker Engine** | Essencial para instanciar os bancos de forma isolada ([Instalação](https://docs.docker.com/get-docker/)) |
-| **Docker Compose** | Já vem embutido no Docker Desktop (orquestra nossos 5 serviços) |
-| **Make (opcional)** | Usado para atalhos no terminal. Se não tiver, use comandos brutos do Docker. |
-| **Python 3.8+** | Recomendado para executar os notebooks em ambiente virtual Python. |
-| **Recursos** | Recomenda-se 8GB RAM ou superior. |
+| **Docker Engine** | Essential to instantiate databases in isolation ([Installation](https://docs.docker.com/get-docker/)) |
+| **Docker Compose** | Already bundled with Docker Desktop (orchestrates our 5 services) |
+| **Make (optional)** | Used for terminal shortcuts. If you don't have it, use raw Docker commands. |
+| **Python 3.8+** | Recommended for running notebooks in a Python virtual environment. |
+| **Resources** | 8GB RAM or more is recommended. |
 
-Verifique a instalação das ferramentas vitais:
+Verify the installation of the vital tools:
 ```bash
 docker version
 docker compose version
@@ -66,35 +66,35 @@ docker compose version
 
 ---
 
-## 🗺️ Mapa de Aprendizagem
+## 🗺️ Learning Map
 
-Para extrair o máximo do laboratório, sugerimos a seguinte jornada: primeiro a base teórica, e então a imersão guiada no terminal/notebook de cada paradigma.
+To get the most out of the lab, we suggest the following journey: first the theoretical foundation, then the guided immersion in the terminal/notebook for each paradigm.
 
-### 📖 Teoria: Fundamentos da Escala
-| # | Módulo Teórico | O que você vai aprender | Link |
+### 📖 Theory: Foundations of Scale
+| # | Theoretical Module | What you'll learn | Link |
 |:---:|:---|:---|:---:|
-| 1 | **Desafio da Escala e Teorema CAP** | O limite relacional, garantia ACID, e o Teorema que governa sistemas distribuídos. | [📖 Ler](docs/01-sql-vs-nosql-cap.md) |
-| 2 | **Paradigmas NoSQL e Modelos de Dados** | Como o armazenamento difere: Tabela, Hash, Documento, Coluna Larga e Grafo. | [📖 Ler](docs/02-paradigmas-nosql.md) |
+| 1 | **The Scale Challenge and the CAP Theorem** | The relational limit, ACID guarantee, and the Theorem that governs distributed systems. | [📖 Read](docs/01-sql-vs-nosql-cap.md) |
+| 2 | **NoSQL Paradigms and Data Models** | How storage differs: Table, Hash, Document, Wide Column, and Graph. | [📖 Read](docs/02-nosql-paradigms.md) |
 
-### 🧪 Labs Práticos: Mãos na Massa
-Nossos laboratórios ocorrem dentro da pasta `notebooks/`. Siga a ordem ou pule direto para o banco do seu interesse:
+### 🧪 Practical Labs: Hands On
+Our labs take place inside the `notebooks/` folder. Follow the order or jump straight to the database of your interest:
 
-| # | Banco | Paradigma | Casos de Uso Reais | Lab Interativo |
+| # | Database | Paradigm | Real Use Cases | Interactive Lab |
 |:---:|:---|:---|:---|:---:|
-| 1 | 🔴 **Redis** | Chave-Valor | Caches, sessões web, carrinhos abandonados, placares em tempo real. | [🧪 Ir para o Lab](notebooks/01_redis.ipynb) |
-| 2 | 🟢 **MongoDB** | Documento | Catálogos de e-commerce flexíveis, CMS, prototipagem ágil, perfis multi-facetados. | [🧪 Ir para o Lab](notebooks/02_mongodb.ipynb) |
-| 3 | 🔵 **Cassandra** | Colunar | Escrita massiva: sensores de IoT industriais, métricas temporais, log de logs contínuos. | [🧪 Ir para o Lab](notebooks/03_cassandra.ipynb) |
-| 4 | 🟡 **Neo4j** | Grafo | Redes sociais (amigo do amigo), recomendação de produtos, rotas ótimas, detecção de fraude. | [🧪 Ir para o Lab](notebooks/04_neo4j.ipynb) |
-| 5 | 🐘 **PostgreSQL** | Relacional | Sistemas financeiros rigorosos, folha de pagamento, onde 100% de consistência é vital. | [🧪 Ir para o Lab](notebooks/05_postgres.ipynb) |
+| 1 | 🔴 **Redis** | Key-Value | Caches, web sessions, abandoned carts, real-time leaderboards. | [🧪 Go to Lab](notebooks/01_redis.ipynb) |
+| 2 | 🟢 **MongoDB** | Document | Flexible e-commerce catalogs, CMS, agile prototyping, multi-faceted profiles. | [🧪 Go to Lab](notebooks/02_mongodb.ipynb) |
+| 3 | 🔵 **Cassandra** | Wide-Column | Massive writes: industrial IoT sensors, time-series metrics, continuous log streams. | [🧪 Go to Lab](notebooks/03_cassandra.ipynb) |
+| 4 | 🟡 **Neo4j** | Graph | Social networks (friend-of-a-friend), product recommendation, optimal routes, fraud detection. | [🧪 Go to Lab](notebooks/04_neo4j.ipynb) |
+| 5 | 🐘 **PostgreSQL** | Relational | Rigorous financial systems, payroll, where 100% consistency is vital. | [🧪 Go to Lab](notebooks/05_postgres.ipynb) |
 
 > [!NOTE]
-> Você também pode explorar grafos visualmente. Quando o laboratório estiver rodando, acesse o painel **[Neo4j Browser](http://localhost:7475)** e insira `bolt://localhost:7688` para explorar arestas de forma interativa!
+> You can also explore graphs visually. When the lab is running, access the **[Neo4j Browser](http://localhost:7475)** panel and enter `bolt://localhost:7688` to interactively explore edges!
 
 ---
 
-## 🏗️ Arquitetura do Laboratório
+## 🏗️ Lab Architecture
 
-Abaixo a arquitetura da frota de bancos rodando através do Docker Compose, usando redes isoladas e persistência garantida via volumes.
+Below is the architecture of the database fleet running through Docker Compose, using isolated networks and guaranteed persistence via volumes.
 
 ```mermaid
 graph TD
@@ -142,40 +142,40 @@ graph TD
 
 ---
 
-## 📝 Cheatsheet de Administração do Lab
+## 📝 Lab Administration Cheatsheet
 
-Além dos notebooks, você pode "entrar" nos bancos via linha de comando para fazer consultas curtas. Use as ferramentas já configuradas no `Makefile`:
+Besides the notebooks, you can "enter" the databases via command line to make short queries. Use the tools already configured in the `Makefile`:
 
 ```bash
-# ── Orquestração do Laboratório ──
-make up            # Sobe o laboratório todo em background
-make down          # Pausa o lab (mas não apaga seus dados)
-make clean         # ⚠️ DESTRÓI os containers E zera todos os dados (útil para recomeçar)
-make status        # Veja quais bancos estão rodando
+# ── Lab Orchestration ──
+make up            # Starts the entire lab in background
+make down          # Pauses the lab (but does not delete your data)
+make clean         # ⚠️ DESTROYS containers AND wipes all data (useful to start over)
+make status        # See which databases are running
 
-# ── Acessando os Terminais Nativos ──
-make shell-redis       # Abre a CLI do Redis (redis-cli)
-make shell-mongo       # Abre o Shell do MongoDB (mongosh)
-make shell-cassandra   # Abre a CLI de Consulta (cqlsh)
-make shell-postgres    # Abre a CLI do Postgres (psql)
+# ── Accessing Native Terminals ──
+make shell-redis       # Opens the Redis CLI (redis-cli)
+make shell-mongo       # Opens the MongoDB Shell (mongosh)
+make shell-cassandra   # Opens the Query CLI (cqlsh)
+make shell-postgres    # Opens the Postgres CLI (psql)
 ```
 
 ---
 
-## 💾 Persistência de Dados e Limpeza
+## 💾 Data Persistence and Cleanup
 
-Sua experimentação está segura. O projeto utiliza **volumes Docker nomeados**.
+Your experimentation is safe. The project uses **named Docker volumes**.
 
-Isso significa que se você desligar o computador (ou rodar `make down`), as tabelas, documentos e grafos criados dentro dos notebooks estarão preservados na próxima vez que você subir os containers.
+This means that if you turn off your computer (or run `make down`), the tables, documents, and graphs created inside the notebooks will be preserved the next time you start the containers.
 
-Se você fez bagunça e quer "resetar" todos os bancos para o estado inicial virgem de fábrica, basta executar `make clean`.
+If you've made a mess and want to "reset" all databases to their clean initial state, just run `make clean`.
 
 ---
 
-## 📄 Referências Oficiais e Licença
+## 📄 Official References and License
 
 - [MongoDB University](https://learn.mongodb.com/)
 - [Neo4j GraphAcademy](https://graphacademy.neo4j.com/)
 - [DataStax Cassandra](https://www.datastax.com/learn)
 
-> **Material educacional aberto.** Criado para as aulas práticas da disciplina de **Ciência de Dados para Negócios** (UFPB). Desenvolvido por Hilton Martins.
+> **Open educational material.** Created for the practical lessons of the **Data Science for Business** course (UFPB). Developed by Hilton Martins.
